@@ -10,7 +10,8 @@ class SubProductTreeService {
         .doc(subProductTree.id)
         .set({
           'id': subProductTree.id,
-          'product': subProductTree.product,
+          'subProductId': subProductTree.subProductId,
+          'productId': subProductTree.productId,
           'amount': subProductTree.amount,
         })
         .then((value) => print("SubProductTree added"))
@@ -21,7 +22,8 @@ class SubProductTreeService {
     return subProductTreesRef
         .doc(subProductTree.id)
         .update({
-          'product': subProductTree.product,
+          'subProductId': subProductTree.subProductId,
+          'productId': subProductTree.productId,
           'amount': subProductTree.amount,
         })
         .then((value) => print("SubProductTree updated"))

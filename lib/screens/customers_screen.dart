@@ -66,56 +66,53 @@ class _CustomersScreenState extends State<CustomersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Customers Screen'),
-        ),
-        body: StreamBuilder<QuerySnapshot>(
-            stream: customers.snapshots(),
-            builder:
-                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (snapshot.hasError) {
-                return Text('Something went wrong');
-              }
-              if (!snapshot.hasData) {
-                return Text('No data');
-              }
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Text('Loading');
-              }
-              return new ListView(
-                children: snapshot.data.docs.map((DocumentSnapshot document) {
-                  return Card(
-                    elevation: 8,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(0),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Customers Screen'),
+      ),
+      body: StreamBuilder<QuerySnapshot>(
+          stream: customers.snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) {
+              return Text('Something went wrong');
+            }
+            if (!snapshot.hasData) {
+              return Text('No data');
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Text('Loading');
+            }
+            return new ListView(
+              children: snapshot.data.docs.map((DocumentSnapshot document) {
+                return Card(
+                  elevation: 8,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                  child: ListTile(
+                    tileColor: Colors.red,
+                    title: Row(
+                      children: <Widget>[
+                        Text(document.get('name')),
+                      ],
                     ),
-                    child: ListTile(
-                      tileColor: Colors.red,
-                      title: Row(
-                        children: <Widget>[
-                          Text(document.get('name')),
-                        ],
-                      ),
-                      trailing: IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () {
-                          CustomerService().delete(document.get('id'));
-                        },
-                      ),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        CustomerService().delete(document.get('id'));
+                      },
                     ),
-                  );
-                }).toList(),
-              );
-            }),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            _showFormDialog(context);
-          },
-        ),
+                  ),
+                );
+              }).toList(),
+            );
+          }),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          _showFormDialog(context);
+        },
       ),
     );
   }

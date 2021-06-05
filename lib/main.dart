@@ -1,3 +1,4 @@
+import 'package:provider/provider.dart';
 import 'package:web_programlama_hw3_1306160014_1306160046/constants.dart';
 import 'package:web_programlama_hw3_1306160014_1306160046/controllers/MenuController.dart';
 import 'package:web_programlama_hw3_1306160014_1306160046/screens/customers_screen.dart';
@@ -5,7 +6,6 @@ import 'package:web_programlama_hw3_1306160014_1306160046/screens/login_screen.d
 import 'package:web_programlama_hw3_1306160014_1306160046/screens/main/screens_for_admin/user_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'package:web_programlama_hw3_1306160014_1306160046/screens/operations_screen.dart';
 import 'package:web_programlama_hw3_1306160014_1306160046/screens/orders_screen.dart';
 import 'package:web_programlama_hw3_1306160014_1306160046/screens/products_screen.dart';
@@ -13,8 +13,7 @@ import 'package:web_programlama_hw3_1306160014_1306160046/screens/sub_product_tr
 import 'package:web_programlama_hw3_1306160014_1306160046/screens/users_screen.dart';
 import 'package:web_programlama_hw3_1306160014_1306160046/screens/work_center_operation_screen.dart';
 import 'package:web_programlama_hw3_1306160014_1306160046/screens/work_centers_screen.dart';
-
-import 'screens/main/screens_for_home_customer/cart_screen.dart';
+import 'screens/main/screens_for_home_customer/new_order_screen.dart';
 import 'screens/main/screens_for_home_customer/choose_products_screen.dart';
 import 'screens/main/screens_for_home_customer/customer_home_screen.dart';
 import 'screens/main/screens_for_home_customer/my_orders_screen.dart';
@@ -29,8 +28,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (context) => MenuController(),
+        ChangeNotifierProvider.value(
+          value: MenuController(),
         ),
       ],
       child: MaterialApp(
@@ -55,9 +54,10 @@ class MyApp extends StatelessWidget {
           '/operations_screen': (context) => OperationsScreen(),
           '/work_centers_screen': (context) => WorkCentersScreen(),
           '/work_center_operation_screen': (context) =>
-              WorkCenterOperationScreen(),
+              WorkCenterOperationsScreen(),
           '/my_orders_screen': (context) => MyOrdersScreen(),
-          '/cart_screen': (context) => CartScreen(),
+          //'/cart_screen': (context) => CartScreen(),
+          '/new_order_screen': (context) => NewOrderScreen(),
           '/choose_products_screen': (context) => ChooseProductsScreen(),
         },
       ),

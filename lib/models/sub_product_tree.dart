@@ -1,15 +1,15 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class SubProductTree {
   String id;
-  DocumentReference product;
-  double amount;
+  String subProductId;
+  String productId;
+  String amount;
 
   SubProductTree();
 
   SubProductTree.fromSubProductTrees(
     this.id,
-    this.product,
+    this.subProductId,
+    this.productId,
     this.amount,
   );
 }

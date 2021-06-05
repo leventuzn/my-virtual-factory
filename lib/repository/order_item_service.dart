@@ -3,15 +3,15 @@ import 'package:web_programlama_hw3_1306160014_1306160046/models/order_item.dart
 
 class OrderItemService {
   CollectionReference orderItemsRef =
-      FirebaseFirestore.instance.collection('orderitems');
+      FirebaseFirestore.instance.collection('orderItems');
 
   Future<void> add(OrderItem orderItem) {
     return orderItemsRef
         .doc(orderItem.id)
         .set({
           'id': orderItem.id,
-          'order': orderItem.order,
-          'product': orderItem.product,
+          'orderId': orderItem.orderId,
+          'productId': orderItem.productId,
           'amount': orderItem.amount,
         })
         .then((value) => print("OrderItem added"))
@@ -22,8 +22,8 @@ class OrderItemService {
     return orderItemsRef
         .doc(orderItem.id)
         .update({
-          'order': orderItem.order,
-          'product': orderItem.product,
+          'orderId': orderItem.orderId,
+          'productId': orderItem.productId,
           'amount': orderItem.amount,
         })
         .then((value) => print("OrderItem updated"))

@@ -45,7 +45,7 @@ class _UsersScreenState extends State<UsersScreen> {
                   TextField(
                     controller: _userNameController,
                     decoration: InputDecoration(
-                      hintText: 'Write a user Name',
+                      hintText: 'Write a username',
                       labelText: 'user Name',
                     ),
                   ),

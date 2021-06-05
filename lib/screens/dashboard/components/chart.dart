@@ -21,23 +21,8 @@ class _ChartState extends State<Chart> {
       numberOfExpired = 0,
       numberOfOrders = 0;
 
-  Future setNumbers() async {
-    numberOfPending =
-        await orders.where('status', isEqualTo: 'PENDING').snapshots().length;
-    numberOfProcessing = await orders
-        .where('status', isEqualTo: 'PROCESSING')
-        .snapshots()
-        .length;
-    numberOfCompleted =
-        await orders.where('status', isEqualTo: 'COMPLETED').snapshots().length;
-    numberOfExpired =
-        await orders.where('status', isEqualTo: 'EXPIRED').snapshots().length;
-    numberOfOrders = await orders.snapshots().length;
-  }
-
   @override
   Widget build(BuildContext context) {
-    setNumbers();
     return StreamBuilder<QuerySnapshot>(
         stream: orders.snapshots(),
         builder: (context, snapshot) {

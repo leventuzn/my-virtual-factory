@@ -32,13 +32,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    FirebaseAuth.instance.authStateChanges().listen((User user) {
-      if (user == null) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('User is currently signed out!'),
-        ));
-      }
-    });
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(

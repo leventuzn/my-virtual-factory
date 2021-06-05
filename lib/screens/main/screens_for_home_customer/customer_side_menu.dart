@@ -26,17 +26,10 @@ class _CustomerSideMenuState extends State<CustomerSideMenu> {
               },
             ),
             DrawerListTile(
-              title: "Cart",
+              title: "New Order",
               svgSrc: "assets/icons/menu_setting.svg",
               press: () {
-                Navigator.pushNamed(context, '/cart_screen');
-              },
-            ),
-            DrawerListTile(
-              title: "Choose Products",
-              svgSrc: "assets/icons/menu_setting.svg",
-              press: () {
-                Navigator.pushNamed(context, '/choose_products_screen');
+                Navigator.pushNamed(context, '/new_order_screen');
               },
             ),
             DrawerListTile(

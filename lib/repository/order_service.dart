@@ -10,10 +10,10 @@ class OrderService {
         .doc(order.id)
         .set({
           'id': order.id,
-          'name': order.name,
-          'customer': order.customer,
-          'date': order.date.toString(),
-          'deadline': order.deadline.day.toString(),
+          'customerId': order.customerId,
+          'date': order.date,
+          'deadline': order.deadline,
+          'status': order.status,
         })
         .then((value) => print("Order added"))
         .catchError((error) => print("Failed to add order: $error"));
@@ -23,10 +23,7 @@ class OrderService {
     return ordersRef
         .doc(order.id)
         .update({
-          'name': order.name,
-          'customer': order.customer,
-          'date': order.date,
-          'deadline': order.deadline,
+          'status': order.status,
         })
         .then((value) => print("Order updated"))
         .catchError((error) => print("Failed to update order: $error"));

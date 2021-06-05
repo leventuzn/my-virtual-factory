@@ -10,8 +10,8 @@ class WorkCenterOperationService {
         .doc(workCenterOperation.id)
         .set({
           'id': workCenterOperation.id,
-          'workCenter': workCenterOperation.workCenter,
-          'operation': workCenterOperation.operation,
+          'workCenterId': workCenterOperation.workCenterId,
+          'operationId': workCenterOperation.operationId,
           'speed': workCenterOperation.speed,
         })
         .then((value) => print("WorkCenterOperation added"))
@@ -23,8 +23,8 @@ class WorkCenterOperationService {
     return workCenterOperationsRef
         .doc(workCenterOperation.id)
         .update({
-          'workCenter': workCenterOperation.workCenter,
-          'operation': workCenterOperation.operation,
+          'workCenterId': workCenterOperation.workCenterId,
+          'operationId': workCenterOperation.operationId,
           'speed': workCenterOperation.speed,
         })
         .then((value) => print("WorkCenterOperation updated"))
@@ -39,9 +39,5 @@ class WorkCenterOperationService {
         .then((value) => print("WorkCenterOperation deleted"))
         .catchError(
             (error) => print("Failed to delete workCenterOperation: $error"));
-  }
-
-  Stream<QuerySnapshot> getworkCenterOperations() {
-    return workCenterOperationsRef.snapshots();
   }
 }

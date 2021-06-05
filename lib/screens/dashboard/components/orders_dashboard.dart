@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../constants.dart';
 
@@ -76,6 +77,7 @@ class _OrdersDashboardState extends State<OrdersDashboard> {
 }
 
 List<DataRow> _createRows(QuerySnapshot snapshot) {
+  final dateFormat = new DateFormat('yyyy-MM-dd HH:mm');
   return snapshot.docs.map((DocumentSnapshot document) {
     Icon _icon = Icon(Icons.description);
     switch (document.get('status')) {
@@ -118,8 +120,10 @@ List<DataRow> _createRows(QuerySnapshot snapshot) {
             ],
           ),
         ),
-        DataCell(Text(document.get('date'))),
-        DataCell(Text(document.get('deadline'))),
+        DataCell(Text(
+            dateFormat.format((document.get('date').toDate())).toString())),
+        DataCell(Text(
+            dateFormat.format((document.get('deadline').toDate())).toString())),
       ],
     );
   }).toList();

@@ -2,20 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Order {
   String id;
-  DocumentReference customer;
-  String name;
-  DateTime date;
-  DateTime deadline;
-  String status;
+  String customerId;
+  Timestamp date;
+  Timestamp deadline;
+  String status = 'PENDING';
 
   Order();
 
   Order.fromOrders(
     this.id,
-    this.customer,
-    this.name,
+    this.customerId,
     this.date,
     this.deadline,
-    this.status,
   );
 }

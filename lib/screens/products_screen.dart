@@ -90,7 +90,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
         title: Text('Products Screen'),
       ),
       body: StreamBuilder<QuerySnapshot>(
-          stream: products.snapshots(),
+          stream: products.orderBy('type').snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
