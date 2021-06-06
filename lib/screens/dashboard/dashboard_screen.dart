@@ -1,6 +1,7 @@
 import 'package:web_programlama_hw3_1306160014_1306160046/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:web_programlama_hw3_1306160014_1306160046/screens/dashboard/components/work_centers_dashboard.dart';
+import 'package:web_programlama_hw3_1306160014_1306160046/screens/dashboard/components/work_queue_dashboard.dart';
 
 import '../../constants.dart';
 import 'components/header.dart';
@@ -26,6 +27,10 @@ class DashboardScreen extends StatelessWidget {
                   flex: 5,
                   child: Column(
                     children: [
+                      WorkQueuesDashboard(),
+                      SizedBox(
+                        height: defaultPadding,
+                      ),
                       OrdersDashboard(status: "PROCESSING"),
                       SizedBox(height: defaultPadding),
                       OrdersDashboard(status: "PENDING"),

@@ -2,9 +2,10 @@ class WorkQueue {
   String id;
   String orderId;
   String productId;
-  String operationType;
+  String operationId;
   String amount;
   bool hasSubProcess;
+  String workCenterId = "WAITING";
 
   WorkQueue();
 }

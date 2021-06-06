@@ -12,9 +12,10 @@ class WorkQueueService {
           'id': workQueue.id,
           'orderId': workQueue.orderId,
           'productId': workQueue.productId,
-          'operationName': workQueue.operationType,
+          'operationId': workQueue.operationId,
           'amount': workQueue.amount,
           'hasSubProcess': workQueue.hasSubProcess,
+          'workCenterId': workQueue.workCenterId,
         })
         .then((value) => print("WorkQueue added"))
         .catchError((error) => print("Failed to add WorkQueue: $error"));

@@ -21,7 +21,6 @@ class WorkCenterService {
     return workCentersRef
         .doc(workCenter.id)
         .update({
-          'name': workCenter.name,
           'active': workCenter.active,
         })
         .then((value) => print("workCenter updated"))

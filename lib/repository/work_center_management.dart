@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:web_programlama_hw3_1306160014_1306160046/models/work_center.dart';
 import 'package:web_programlama_hw3_1306160014_1306160046/repository/work_center_service.dart';
@@ -9,6 +8,24 @@ class WorkCenterManagement {
       FirebaseFirestore.instance.collection('workcenters');
   CollectionReference workCenterOperations =
       FirebaseFirestore.instance.collection('workcenteroperations');
+  CollectionReference workQueues =
+      FirebaseFirestore.instance.collection('workQueues');
+
+  void listenWorkQueue(String workCenterId) {
+    workQueues
+        .where('workCenterId', isEqualTo: workCenterId)
+        .snapshots()
+        .map((doc) {
+      while (doc.size > 0) {
+        workCenters.doc(workCenterId).get().then((value) {
+          if (value.get('active') == false) {
+            startOperation(workCenterId, doc.docs.first.get('amount'));
+            workQueues.doc(doc.docs.first.id).delete();
+          }
+        });
+      }
+    });
+  }
 
   void startOperation(String workCenterId, String amount) async {
     WorkCenter workCenter;

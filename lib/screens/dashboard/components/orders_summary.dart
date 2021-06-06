@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +23,6 @@ class _OrdersSummaryState extends State<OrdersSummary> {
       numberOfCompleted = 0,
       numberOfExpired = 0,
       numberOfOrders = 0;
-
   Future getPending() async {
     await orders
         .where('status', isEqualTo: 'PENDING')

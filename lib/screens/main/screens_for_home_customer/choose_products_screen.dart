@@ -25,18 +25,6 @@ class _ChooseProductsScreenState extends State<ChooseProductsScreen> {
   var _amountController = TextEditingController();
   String _subProductId;
   double _subProductAmount;
-  String _amount;
-  String _type;
-
-  Future setAmount(productId, subProductId) async {
-    await products
-        .where('productId', isEqualTo: productId)
-        .where('subProductId', isEqualTo: subProductId)
-        .get()
-        .then((value) {
-      _amount = value.docs.first.get('amount');
-    });
-  }
 
   Future getSubProducts(String productId) async {
     await subProductTrees
@@ -75,7 +63,7 @@ class _ChooseProductsScreenState extends State<ChooseProductsScreen> {
                   workQueue.id = workQueues.doc().id;
                   workQueue.orderId = orderId;
                   workQueue.productId = productId;
-                  workQueue.operationType = 'Dikim';
+                  workQueue.operationId = 'ovFvxUbcaz8dem8eOZST';
                   workQueue.amount =
                       (double.parse(orderItem.amount) * _subProductAmount)
                           .toString();
@@ -84,7 +72,7 @@ class _ChooseProductsScreenState extends State<ChooseProductsScreen> {
 
                   workQueue.id = workQueues.doc().id;
                   workQueue.productId = _subProductId;
-                  workQueue.operationType = 'Kesim';
+                  workQueue.operationId = 'QEvqL4YwEzaI2Y9JSrQa';
                   workQueue.hasSubProcess = false;
                   WorkQueueService().add(workQueue);
 

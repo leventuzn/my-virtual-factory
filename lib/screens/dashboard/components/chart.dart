@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -74,6 +76,7 @@ class _ChartState extends State<Chart> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Text('Loading..');
           }
+
           List<PieChartSectionData> paiChartSelectionDatas = [
             PieChartSectionData(
               color: primaryColor,
