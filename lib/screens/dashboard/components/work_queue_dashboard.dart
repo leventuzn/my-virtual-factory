@@ -14,21 +14,17 @@ class WorkQueuesDashboard extends StatefulWidget {
 class _WorkQueuesDashboardState extends State<WorkQueuesDashboard> {
   CollectionReference workQueues =
       FirebaseFirestore.instance.collection('workQueues');
-
   CollectionReference workCenters =
       FirebaseFirestore.instance.collection('workcenters');
   CollectionReference workCenterOperations =
       FirebaseFirestore.instance.collection('workcenteroperations');
+  CollectionReference orders = FirebaseFirestore.instance.collection('orders');
+  CollectionReference operations =
+      FirebaseFirestore.instance.collection('operations');
+  String _selectedWorkCenterId;
 
-  _showFormDialog(
-      BuildContext context, String operationId, String amount) async {
-    var workCenterIds = [];
-    await workCenterOperations
-        .where('operationId', isEqualTo: operationId)
-        .get()
-        .then((value) => value.docs.forEach((doc) {
-              workCenterIds.add(doc.get('workCenterId'));
-            }));
+  _showFormDialog(BuildContext context, DocumentSnapshot documentSnapshot,
+      List<dynamic> workCenterIds) {
     return showDialog(
         context: context,
         // ekrana tiklandiginda alerti dismiss etmek icin true veriyoruz ozellige
@@ -41,7 +37,15 @@ class _WorkQueuesDashboardState extends State<WorkQueuesDashboard> {
                 child: Text('Cancel'),
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  await workQueues
+                      .doc(documentSnapshot.get('id'))
+                      .update({'workCenterId': _selectedWorkCenterId});
+                  orders
+                      .doc(documentSnapshot.get('orderId'))
+                      .update({'status': 'PROCESSING'});
+                  Navigator.pop(context);
+                },
                 child: Text('Save'),
               ),
             ],
@@ -62,7 +66,7 @@ class _WorkQueuesDashboardState extends State<WorkQueuesDashboard> {
                           return DropdownButton(
                               isExpanded: true,
                               menuMaxHeight: 300,
-                              value: null,
+                              value: _selectedWorkCenterId,
                               items: snapshot.data.docs
                                   .map((DocumentSnapshot document) {
                                 return DropdownMenuItem(
@@ -70,7 +74,11 @@ class _WorkQueuesDashboardState extends State<WorkQueuesDashboard> {
                                     value: document.id,
                                     child: Text(document.get('name')));
                               }).toList(),
-                              onChanged: (changedValue) {});
+                              onChanged: (changedValue) {
+                                setState(() {
+                                  _selectedWorkCenterId = changedValue;
+                                });
+                              });
                         },
                       );
                     },
@@ -85,13 +93,22 @@ class _WorkQueuesDashboardState extends State<WorkQueuesDashboard> {
   List<DataRow> _createRows(QuerySnapshot snapshot) {
     return snapshot.docs.map((DocumentSnapshot document) {
       Icon _icon = Icon(Icons.settings);
+
       return new DataRow(
         cells: [
           DataCell(
             InkWell(
-              onTap: () {
-                _showFormDialog(context, document.get('operationId'),
-                    document.get('amount'));
+              onTap: () async {
+                var workCenterIds = [];
+                await workCenterOperations
+                    .where('operationId',
+                        isEqualTo: document.get('operationId'))
+                    .get()
+                    .then((value) => value.docs.forEach((doc) {
+                          workCenterIds.add(doc.get('workCenterId'));
+                          _selectedWorkCenterId = null;
+                        }));
+                _showFormDialog(context, document, workCenterIds);
               },
               child: Row(
                 children: [
@@ -107,6 +124,7 @@ class _WorkQueuesDashboardState extends State<WorkQueuesDashboard> {
           ),
           DataCell(Text(document.get('operationId'))),
           DataCell(Text(document.get('amount'))),
+          DataCell(Text(document.get('workCenterId'))),
         ],
       );
     }).toList();
@@ -154,6 +172,9 @@ class _WorkQueuesDashboardState extends State<WorkQueuesDashboard> {
                           ),
                           DataColumn(
                             label: Text("Amount"),
+                          ),
+                          DataColumn(
+                            label: Text("WorkCenterId"),
                           ),
                         ],
                         rows: _createRows(snapshot.data),

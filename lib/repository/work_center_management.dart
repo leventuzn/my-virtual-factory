@@ -1,7 +1,4 @@
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:web_programlama_hw3_1306160014_1306160046/models/work_center.dart';
-import 'package:web_programlama_hw3_1306160014_1306160046/repository/work_center_service.dart';
 
 class WorkCenterManagement {
   CollectionReference workCenters =
@@ -11,30 +8,25 @@ class WorkCenterManagement {
   CollectionReference workQueues =
       FirebaseFirestore.instance.collection('workQueues');
 
-  void listenWorkQueue(String workCenterId) {
-    workQueues
-        .where('workCenterId', isEqualTo: workCenterId)
-        .snapshots()
-        .map((doc) {
-      while (doc.size > 0) {
-        workCenters.doc(workCenterId).get().then((value) {
-          if (value.get('active') == false) {
-            startOperation(workCenterId, doc.docs.first.get('amount'));
-            workQueues.doc(doc.docs.first.id).delete();
+  void checkWorkQueue() {
+    workCenters.get().then((workCenter) {
+      workCenter.docs.forEach((element) {
+        workQueues
+            .where('workCenterId', isEqualTo: element.id)
+            .get()
+            .then((workQueue) {
+          if (workQueue.size > 0 && element.get('active') != true) {
+            startOperation(element.id, workQueue.docs.first.get('amount'));
+            workQueues.doc(workQueue.docs.first.id).delete();
           }
         });
-      }
+      });
     });
   }
 
   void startOperation(String workCenterId, String amount) async {
-    WorkCenter workCenter;
-    await workCenters.doc(workCenterId).get().then((value) {
-      workCenter.id = value.get('id');
-      workCenter.name = value.get('name');
-      workCenter.active = true;
-    });
-    WorkCenterService().update(workCenter);
+    await workCenters.doc(workCenterId).update({'active': true});
+
     processing(workCenterId, amount);
   }
 
@@ -48,17 +40,13 @@ class WorkCenterManagement {
     });
     int _minutes = (double.parse(amount) / _speed).ceil();
     Duration _sleepTime = Duration(minutes: _minutes);
-    sleep(_sleepTime);
+
+    await Future.delayed(_sleepTime);
+
     endOperation(workCenterId);
   }
 
   void endOperation(String workCenterId) async {
-    WorkCenter workCenter;
-    await workCenters.doc(workCenterId).get().then((value) {
-      workCenter.id = value.get('id');
-      workCenter.name = value.get('name');
-      workCenter.active = false;
-    });
-    WorkCenterService().update(workCenter);
+    await workCenters.doc(workCenterId).update({'active': false});
   }
 }

@@ -14,7 +14,7 @@ class OrderManagement {
         .toUtc());
   }
 
-  void checkExpired() {
+  void checkOrders() {
     orders.get().then((order) {
       order.docs.forEach((orderDoc) {
         if (isBeforeToday(orderDoc.get('deadline')) &&
@@ -27,6 +27,16 @@ class OrderManagement {
             workQueue.docs.forEach((workDoc) {
               workQueues.doc(workDoc.id).delete();
             });
+          });
+        } else if (orderDoc.get('status') != 'COMPLETED' &&
+            orderDoc.get('status') != 'EXPIRED') {
+          workQueues
+              .where('orderId', isEqualTo: orderDoc.id)
+              .get()
+              .then((value) {
+            if (value.size == 0) {
+              orders.doc(orderDoc.id).update({'status': 'COMPLETED'});
+            }
           });
         }
       });

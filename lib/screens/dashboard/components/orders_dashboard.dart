@@ -1,9 +1,6 @@
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:web_programlama_hw3_1306160014_1306160046/repository/order_management.dart';
 
 import '../../../constants.dart';
 
@@ -20,22 +17,6 @@ class OrdersDashboard extends StatefulWidget {
 
 class _OrdersDashboardState extends State<OrdersDashboard> {
   CollectionReference orders = FirebaseFirestore.instance.collection('orders');
-
-  Timer timer;
-
-  @override
-  void initState() {
-    super.initState();
-    timer = Timer.periodic(Duration(seconds: 5), (Timer t) {
-      OrderManagement().checkExpired();
-    });
-  }
-
-  @override
-  void dispose() {
-    timer?.cancel();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
