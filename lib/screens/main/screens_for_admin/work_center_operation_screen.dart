@@ -153,7 +153,7 @@ class _WorkCenterOperationsScreenState
                   ),
                   child: ListTile(
                     tileColor: Colors.red,
-                    leading: Text(document.get('speed') + 'ürün/dk'),
+                    leading: Text(document.get('speed') + ' m/dk'),
                     title: Row(
                       children: <Widget>[
                         Text(document.get('id')),

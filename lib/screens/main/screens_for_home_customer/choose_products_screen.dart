@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:web_programlama_hw3_1306160014_1306160046/models/order_item.dart';
+import 'package:web_programlama_hw3_1306160014_1306160046/models/work_queue.dart';
 import 'package:web_programlama_hw3_1306160014_1306160046/repository/order_item_service.dart';
+import 'package:web_programlama_hw3_1306160014_1306160046/repository/work_queue_service.dart';
 
 class ChooseProductsScreen extends StatefulWidget {
   @override
@@ -16,7 +18,35 @@ class _ChooseProductsScreenState extends State<ChooseProductsScreen> {
       FirebaseFirestore.instance.collection('products');
   CollectionReference customers =
       FirebaseFirestore.instance.collection('customers');
+  CollectionReference workQueues =
+      FirebaseFirestore.instance.collection('workQueues');
+  CollectionReference subProductTrees =
+      FirebaseFirestore.instance.collection('subproducttrees');
   var _amountController = TextEditingController();
+  String _subProductId;
+  double _subProductAmount;
+  String _amount;
+  String _type;
+
+  Future setAmount(productId, subProductId) async {
+    await products
+        .where('productId', isEqualTo: productId)
+        .where('subProductId', isEqualTo: subProductId)
+        .get()
+        .then((value) {
+      _amount = value.docs.first.get('amount');
+    });
+  }
+
+  Future getSubProducts(String productId) async {
+    await subProductTrees
+        .where('productId', isEqualTo: productId)
+        .get()
+        .then((value) {
+      _subProductId = value.docs.first.get('subProductId');
+      _subProductAmount = double.parse(value.docs.first.get('amount'));
+    });
+  }
 
   _showFormDialog(BuildContext context, String orderId, String productId) {
     return showDialog(
@@ -38,6 +68,27 @@ class _ChooseProductsScreenState extends State<ChooseProductsScreen> {
                   orderItem.amount = _amountController.text;
                   orderItem.productId = productId;
                   OrderItemService().add(orderItem);
+
+                  await getSubProducts(productId);
+
+                  WorkQueue workQueue = new WorkQueue();
+                  workQueue.id = workQueues.doc().id;
+                  workQueue.orderId = orderId;
+                  workQueue.productId = productId;
+                  workQueue.operationType = 'Dikim';
+                  workQueue.amount =
+                      (double.parse(orderItem.amount) * _subProductAmount)
+                          .toString();
+                  workQueue.hasSubProcess = true;
+                  WorkQueueService().add(workQueue);
+
+                  workQueue.id = workQueues.doc().id;
+                  workQueue.productId = _subProductId;
+                  workQueue.operationType = 'Kesim';
+                  workQueue.hasSubProcess = false;
+                  WorkQueueService().add(workQueue);
+
+                  Navigator.pop(context);
                 },
                 child: Text('Save'),
               ),

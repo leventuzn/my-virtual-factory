@@ -29,13 +29,6 @@ class _UserSideMenuState extends State<UserSideMenu> {
               },
             ),
             DrawerListTile(
-              title: "Users",
-              svgSrc: "assets/icons/menu_tran.svg",
-              press: () {
-                Navigator.pushNamed(context, '/users_screen');
-              },
-            ),
-            DrawerListTile(
               title: "Orders",
               svgSrc: "assets/icons/menu_task.svg",
               press: () {

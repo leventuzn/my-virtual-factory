@@ -21,6 +21,48 @@ class _ChartState extends State<Chart> {
       numberOfExpired = 0,
       numberOfOrders = 0;
 
+  Future getPending() async {
+    await orders
+        .where('status', isEqualTo: 'PENDING')
+        .get()
+        .then((value) => numberOfPending = value.size);
+  }
+
+  Future getProcessing() async {
+    await orders
+        .where('status', isEqualTo: 'PROCESSING')
+        .get()
+        .then((value) => numberOfProcessing = value.size);
+  }
+
+  Future getCompleted() async {
+    await orders
+        .where('status', isEqualTo: 'COMPLETED')
+        .get()
+        .then((value) => numberOfCompleted = value.size);
+  }
+
+  Future getExpired() async {
+    await orders
+        .where('status', isEqualTo: 'EXPIRED')
+        .get()
+        .then((value) => numberOfExpired = value.size);
+  }
+
+  Future getNumberOfOrders() async {
+    await orders.get().then((value) => numberOfOrders = value.size);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getCompleted();
+    getPending();
+    getProcessing();
+    getExpired();
+    getNumberOfOrders();
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(

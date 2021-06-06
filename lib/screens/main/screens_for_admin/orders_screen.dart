@@ -31,26 +31,32 @@ class _OrdersScreenState extends State<OrdersScreen> {
           }
           return new ListView(
             children: snapshot.data.docs.map((DocumentSnapshot document) {
-              return Card(
-                elevation: 8,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                child: ListTile(
-                  tileColor: Colors.red,
-                  title: Row(
-                    children: <Widget>[
-                      Text('Order ID: ' + document.get('id')),
-                    ],
+              return InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, "/order_items_screen",
+                      arguments: document.get('id'));
+                },
+                child: Card(
+                  elevation: 8,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(0),
                   ),
-                  subtitle: Text('Order date: ' +
-                      dateFormat
-                          .format((document.get('date').toDate()))
-                          .toString()),
-                  trailing: Text('Deadline: ' +
-                      dateFormat
-                          .format((document.get('deadline').toDate()))
-                          .toString()),
+                  child: ListTile(
+                    tileColor: Colors.red,
+                    title: Row(
+                      children: <Widget>[
+                        Text('Order ID: ' + document.get('id')),
+                      ],
+                    ),
+                    subtitle: Text('Order date: ' +
+                        dateFormat
+                            .format((document.get('date').toDate()))
+                            .toString()),
+                    trailing: Text('Deadline: ' +
+                        dateFormat
+                            .format((document.get('deadline').toDate()))
+                            .toString()),
+                  ),
                 ),
               );
             }).toList(),
