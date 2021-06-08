@@ -28,8 +28,7 @@ class OrderManagement {
               workQueues.doc(workDoc.id).delete();
             });
           });
-        } else if (orderDoc.get('status') != 'COMPLETED' &&
-            orderDoc.get('status') != 'EXPIRED') {
+        } else if (orderDoc.get('status') == 'PROCESSING') {
           workQueues
               .where('orderId', isEqualTo: orderDoc.id)
               .get()

@@ -22,7 +22,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
+    timer = Timer.periodic(Duration(seconds: 10), (Timer t) {
       OrderManagement().checkOrders();
       WorkCenterManagement().checkWorkQueue();
     });
